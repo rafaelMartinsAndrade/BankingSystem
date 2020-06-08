@@ -49,7 +49,7 @@
         </div>
         <div>
           <button class="btn btn-success" type="button" onClick="cadUsuario()" style="width: 49%;">Salvar</button>
-          &#32;<a class="btn btn-danger" href="index.php" style="width: 49%;">Voltar</a>
+          &#32;<a class="btn btn-danger" href="index.php" style="width: 49%;">Voltar</a><!--- Voltar --->
          
         </div>
       
