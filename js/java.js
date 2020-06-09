@@ -38,7 +38,7 @@ function checkDarkMode(){
     if(usuarioIndex === -1){
      Swal.fire({
      
-       icon: 'warning',
+       icon: 'error',
        title: 'Email informado está incorreto',
        showConfirmButton: false,
        timer: 1500
@@ -47,7 +47,7 @@ function checkDarkMode(){
       if(usuariosGravados[usuarioIndex].senha !== senha){
        Swal.fire({
      
-         icon: 'warning',
+         icon: 'error',
          title: 'Senha informada está incorreta',
          showConfirmButton: false,
          timer: 1500
@@ -100,7 +100,7 @@ function checkDarkMode(){
     const senha = document.getElementById("senha").value;
    
   
-    const usuario = {id: Date.now(),nome, endereco, telefone, email,senha};
+    const usuario = {id: Date.now(),nome, endereco, telefone, email,senha, status:"ativo", saldo:0};
   
     let usuarioGravado = JSON.parse(window.localStorage.getItem("usuarios"));
     if(usuarioGravado == null){ 
@@ -122,7 +122,7 @@ function checkDarkMode(){
   
         Swal.fire({
           icon: 'success',
-          title: 'Usuário alterado com sucesso!!!',
+          title: 'Usuário cadastrado com sucesso!!!',
           showConfirmButton: false,
           timer: 1500
         });
@@ -152,5 +152,53 @@ function checkDarkMode(){
   
       }  
       
+    }
+  }
+
+
+  function saldos(x){
+    if(document.getElementById("dinheiro").value == ""){
+      Swal.fire({
+      
+        icon: 'error',
+        title: 'Campo não preenchido',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }else{
+    let usuarioTodos = JSON.parse(localStorage.getItem("usuarios"));
+    let usuarioLog = JSON.parse(localStorage.getItem("usuarioLogado"));
+    let mail = usuarioLog[1].email;
+    let usuario = usuarioTodos.findIndex(usuario => usuario.email == mail);
+    let y = usuarioTodos[usuario].saldo;
+    if(x == "mais"){
+      y = y + parseFloat(document.getElementById("dinheiro").value);
+      document.getElementById("saldo").innerHTML = "R$ " + y.toFixed(2);
+    }else{
+      y = y - parseFloat(document.getElementById("dinheiro").value);
+      document.getElementById("saldo").innerHTML = "R$ " + y.toFixed(2);
+    }
+    usuarioTodos[usuario].saldo = y;
+    localStorage.removeItem('usuarios');
+    window.localStorage.setItem('usuarios',JSON.stringify([]));
+    window.localStorage.setItem('usuarios',JSON.stringify(usuarioTodos));
+    document.getElementById("dinheiro").value = "";
+    atualizaGrafico(y);
+  }
+}
+
+
+  function atualizaGrafico(x){
+    z = x/10;
+    if(x>0){
+      document.getElementById("grafico").innerHTML = '';
+      document.getElementById("grafic").innerHTML = '<img src="images/green.jpg" width=" '+ z +' " height="100">';
+    }else if(x<0){
+      z = (z*-1);
+      document.getElementById("grafic").innerHTML = ''; 
+      document.getElementById("grafico").innerHTML = '<img src="images/red.jpg" width=" '+ z +' " height="100">';
+    }else{
+      document.getElementById("grafico").innerHTML = '';
+      document.getElementById("grafic").innerHTML = '';      
     }
   }
