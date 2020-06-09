@@ -6,10 +6,15 @@
 		display: block;
 		color: white;
 		text-align: center;
-		padding: 5px 6px;
+		padding: 14px 0px 0px 0px;
 		text-decoration: none;
+		height: 34px;
 	  }
 
+	.fadding{
+		transition:  1.5s;
+	}
+	
 	.switch {
 		position: relative;
 		display: inline-block;
@@ -96,6 +101,15 @@
 	  }
 	  
 	  .active {
-		background-color: #4CAF50;
+		background-color: rgb(76, 78, 175);
+	  }
+	  
+	  a:hover {
+		color: #a5a0a0;
+		text-decoration: none;
+	  }
+
+	  a:hover.active{
+		background-color: rgb(34, 37, 165);
 	  }
 

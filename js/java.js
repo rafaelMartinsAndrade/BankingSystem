@@ -1,16 +1,34 @@
 debugger
 function darkMode(){
-    let x = document.getElementById("toggleswitch").checked;
+  let usuarioTodos = JSON.parse(localStorage.getItem("usuarios"));
+  let usuario = usuarioTodos.findIndex(usuario => usuario.log == 1);
+  let x = document.getElementById("toggleswitch").checked;
     if(x == true){
         document.body.style.backgroundColor = "#01000F";
         document.body.style.color = "white";
-        /*
-        localStorage.modo_negro == x;
-        */
+        usuarioTodos[usuario].tema = "preto";
     }else{
         document.body.style.backgroundColor = "white";
         document.body.style.color = "black";
+        usuarioTodos[usuario].tema = "branco";
     }
+    localStorage.removeItem('usuarios');
+    window.localStorage.setItem('usuarios',JSON.stringify([]));
+    window.localStorage.setItem('usuarios',JSON.stringify(usuarioTodos));
+}
+
+function darkMode_onload(){
+  let usuarioTodos = JSON.parse(localStorage.getItem("usuarios"));
+  let usuario = usuarioTodos.findIndex(usuario => usuario.log == 1);
+  let tema = usuarioTodos[usuario].tema;
+  if(tema != ""){
+    if(tema == "preto"){
+        document.getElementById("toggleswitch").checked = true;
+    }else{
+      document.getElementById("toggleswitch").checked = false;
+    }
+  darkMode();
+  }
 }
 
 
@@ -32,8 +50,7 @@ function checkDarkMode(){
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
     let usuariosGravados = JSON.parse(window.localStorage.getItem("usuarios"));
-    const usuario = {email};
-   
+    if(usuariosGravados != null){
     let usuarioIndex = usuariosGravados.findIndex(usuario => usuario.email === email);
     if(usuarioIndex === -1){
      Swal.fire({
@@ -54,17 +71,9 @@ function checkDarkMode(){
        }); 
        document.getElementById("senha").value = '';
     }else{
-      let usuarioLogado = JSON.parse(window.localStorage.getItem("usuarioLogado"));
-      if(usuarioLogado == null){
-        window.localStorage.setItem('usuarioLogado',JSON.stringify([])); // criar
-        usuarioLogado = JSON.parse(window.localStorage.getItem("usuarioLogado"));// atualizar a minha variavel
-        usuarioLogado.push(usuario); // adiciona o novo usuario
-        window.localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado)); // gravar na memoria o objeto atualizado
-      }else{
-        usuarioLogado = [""]; // tira o usuario antigo
-        usuarioLogado.push(usuario); // adiciona o novo usuario
-        window.localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado)); // gravar na memoria o objeto atualizado
-      }
+      usuariosGravados[usuarioIndex].log = 1;
+      localStorage.removeItem('usuarios');
+      window.localStorage.setItem('usuarios',JSON.stringify(usuariosGravados));
        const Toast = Swal.mixin({
          toast: true,
          position: 'top-end',
@@ -82,25 +91,33 @@ function checkDarkMode(){
          title: `Bem vindo ${usuariosGravados[usuarioIndex].nome}`
        });
        setInterval(function(){
-         window.location.href = "index2.php";		
-       }),3000;
-         
+         window.location.href = "home.php";		
+       }),1500;
        }
-       
-       
       }
+    }else{
+      Swal.fire({
+      icon: 'error',
+      title: 'Usuário não cadastrado!',
+      showConfirmButton: false,
+      timer: 1500
+    });
+
     }
+  }
 
 
   function cadUsuario(){
-    const nome = document.getElementById("nome").value;
-    const endereco = document.getElementById("endereco").value;
-    const telefone = document.getElementById("telefone").value;
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
+    let nome = document.getElementById("nome").value;
+    let email = document.getElementById("email").value;
+    let telefone = document.getElementById("telefone").value;
+    let tipo = document.getElementById("tipo").value;
+    let endereco = document.getElementById("endereco").value;
+    let categoria = document.getElementById("categoria").value;
+    let senha = document.getElementById("senha").value;
    
   
-    const usuario = {id: Date.now(),nome, endereco, telefone, email,senha, status:"ativo", saldo:0};
+    let usuario = {id: Date.now(),nome, email, telefone, tipo, endereco, senha, status:"ativo", saldo:0, tema:"", categoria, log:0};
   
     let usuarioGravado = JSON.parse(window.localStorage.getItem("usuarios"));
     if(usuarioGravado == null){ 
@@ -117,15 +134,15 @@ function checkDarkMode(){
         });
       }else{
         usuarioGravado.push(usuario); 
-        window.localStorage.setItem('usuarios', JSON.stringify(usuarioGravado)); 
-      
-  
+        window.localStorage.setItem('usuarios', JSON.stringify(usuarioGravado));
         Swal.fire({
           icon: 'success',
           title: 'Usuário cadastrado com sucesso!!!',
           showConfirmButton: false,
-          timer: 1500
         });
+        setInterval(function(){
+          window.location.href = "index.php";		
+        }),1500;
       }
       
     }else{ 
@@ -145,10 +162,12 @@ function checkDarkMode(){
       
         Swal.fire({
           icon: 'success',
-          title: 'Usuário alterado com sucesso!!!',
+          title: 'Usuário cadastrado com sucesso!!!',
           showConfirmButton: false,
-          timer: 1500
         });
+        setInterval(function(){
+          window.location.href = "index.php";		
+        }),1500;
   
       }  
       
@@ -156,10 +175,9 @@ function checkDarkMode(){
   }
 
 
-  function saldos(x){
+  function saldos(id){
     if(document.getElementById("dinheiro").value == ""){
       Swal.fire({
-      
         icon: 'error',
         title: 'Campo não preenchido',
         showConfirmButton: false,
@@ -167,38 +185,46 @@ function checkDarkMode(){
       });
     }else{
     let usuarioTodos = JSON.parse(localStorage.getItem("usuarios"));
-    let usuarioLog = JSON.parse(localStorage.getItem("usuarioLogado"));
-    let mail = usuarioLog[1].email;
-    let usuario = usuarioTodos.findIndex(usuario => usuario.email == mail);
-    let y = usuarioTodos[usuario].saldo;
-    if(x == "mais"){
-      y = y + parseFloat(document.getElementById("dinheiro").value);
-      document.getElementById("saldo").innerHTML = "R$ " + y.toFixed(2);
+    let usuario = usuarioTodos.findIndex(usuario => usuario.log == 1);
+    let tipo = usuarioTodos[usuario].tipo;
+    let saldobd = usuarioTodos[usuario].saldo;
+    document.getElementById("tipo").innerHTML = 'Tipo de conta: ' + tipo;
+    if(id == "mais"){
+      saldobd = saldobd + parseFloat(document.getElementById("dinheiro").value);
+      document.getElementById("saldo").innerHTML = "R$ " + saldobd.toFixed(2);
     }else{
-      y = y - parseFloat(document.getElementById("dinheiro").value);
-      document.getElementById("saldo").innerHTML = "R$ " + y.toFixed(2);
+      saldobd = saldobd - parseFloat(document.getElementById("dinheiro").value);
+      document.getElementById("saldo").innerHTML = "R$ " + saldobd.toFixed(2);
     }
-    usuarioTodos[usuario].saldo = y;
+    usuarioTodos[usuario].saldo = saldobd;
     localStorage.removeItem('usuarios');
     window.localStorage.setItem('usuarios',JSON.stringify([]));
     window.localStorage.setItem('usuarios',JSON.stringify(usuarioTodos));
     document.getElementById("dinheiro").value = "";
-    atualizaGrafico(y);
+    atualizaGrafico(saldobd);
   }
 }
 
-
-  function atualizaGrafico(x){
-    z = x/10;
-    if(x>0){
-      document.getElementById("grafico").innerHTML = '';
-      document.getElementById("grafic").innerHTML = '<img src="images/green.jpg" width=" '+ z +' " height="100">';
-    }else if(x<0){
-      z = (z*-1);
-      document.getElementById("grafic").innerHTML = ''; 
-      document.getElementById("grafico").innerHTML = '<img src="images/red.jpg" width=" '+ z +' " height="100">';
+  function atualizaGrafico(saldobd){
+    saldototal = saldobd/10;
+    if(saldobd>0){
+      document.getElementById("imgposi").style = "opacity:1;";
+      document.getElementById("imgposi").width = saldototal;
+      document.getElementById("imgneg").width = 0;
+      document.getElementById("imgneg").style = "opacity:0;";
+      document.getElementById("saldo").style = 'color:green;';
+    }else if(saldobd<0){
+      saldototal = (saldobd*-1);
+      document.getElementById("imgneg").style = "opacity:1;";
+      document.getElementById("imgposi").width = 0;
+      document.getElementById("imgneg").width = saldototal;
+      document.getElementById("imgposi").style = "opacity:0;";
+      document.getElementById("saldo").style = 'color:red;';
     }else{
-      document.getElementById("grafico").innerHTML = '';
-      document.getElementById("grafic").innerHTML = '';      
+      document.getElementById("imgposi").width = 0;
+      document.getElementById("imgneg").width = 0;  
+      document.getElementById("imgposi").style = "opacity:0;";
+      document.getElementById("imgneg").style = "opacity:0;";
+      document.getElementById("saldo").style = 'color:default;';
     }
   }
