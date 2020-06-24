@@ -22,8 +22,8 @@
 
 <br>
 <div class="row">
-    <div class="col-md-4 col-lg-4"></div>
-    <div class="col-md-4 col-lg-4" align="center">
+    <div class="col-4 col-xl-4 col-sm-4 col-md-4 col-lg-4"></div>
+    <div class="col-4 col-xl-4 col-sm-4 col-md-4 col-lg-4" align="center">
         <br>
         <img src="images/computer-1331579_1280.png" style="border-radius:50%; heigth: 150px; width: 150px;">
         <br>
@@ -42,7 +42,7 @@
         <br>
         <a href="cadastro.php"><button class="btn btn-secondary" style="width:100%;" id="btn">Cadastre-se agora</button></a>
     </div>
-    <div class="col-md-4 col-lg-4"></div>
+    <div class="col-4 col-xl-4 col-sm-4 col-md-4 col-lg-4"></div>
 </div>
 </body>
 </html>

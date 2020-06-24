@@ -11,19 +11,19 @@ include_once "topo.php";
                 <h2 id="tipo"></h2>
             </div>
             <div class="col-md-4 col-lg-4">
-                <h2>Valor de transação:</h2>
+            <h2>Extrato Conta Digital:</h2>
             </div>
             <div class="col-md-8 col-lg-8"></div>
             <div class="col-md-4 col-lg-4">
                 <input type="number" id="dinheiro" class="form-control" value="0"><br>
                 <select class="form-control" id="tipo_transacao">
+                    <option value=""></option>
                     <option value="alimentacao">Alimentação</option>
                     <option value="carro">Carro</option>
                     <option value="familia">Família</option>
                     <option value="lazer">Lazer</option>
                     <option value="residencia">Residência</option>
                     <option value="saude">Saúde</option>
-                    <option value="outros">Outros</option>
                 </select><br>
                 <button class="btn btn-success" id="mais" style="width:49%;" onClick="saldos(this.id)">Entrada</button>&#32;<button class="btn btn-danger" id="menos" style="width:49%;" onClick="saldos(this.id)">Saída</button>
                 <label id="saldo">R$ 0</label>
@@ -39,5 +39,6 @@ include_once "topo.php";
 <script>
 window.onload = saldos("mais");
 window.onload = darkMode_onload();
+window.onload = extrato();
 </script>
 </html>

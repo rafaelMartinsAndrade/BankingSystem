@@ -19,8 +19,8 @@
 </head>
 <body>
   <div class="row">
-    <div class="col-md-4 col-xs-4"></div>
-    <div class="col-md-4 col-xs-4">
+    <div class="col-4 col-xl-4 col-sm-4 col-md-4 col-lg-4"></div>
+    <div class="col-4 col-xl-4 col-sm-4 col-md-4 col-lg-4">
       <h2>Cadastro de Usuários</h2>
         <div class="form-group" hidden>
            <label for="" >ID</label>
@@ -72,7 +72,7 @@
         </div>
       
     </div>
-    <div class="col-md-4 col-xs-4">
+    <div class="col-4 col-xl-4 col-sm-4 col-md-4 col-lg-4">
     
     </div>
     
