@@ -113,3 +113,21 @@
 		background-color: rgb(34, 37, 165);
 	  }
 
+	  table {
+		border-collapse: collapse;
+		width: 100%;
+	  }
+	  
+	  th, td {
+		padding: 8px;
+		text-align: left;
+		border-bottom: 1px solid #ddd;
+	  }
+	  
+	  tr:hover {
+		background-color:gray;
+	  }
+
+	  .hover_none {
+		background-color: transparent !important;
+	  }

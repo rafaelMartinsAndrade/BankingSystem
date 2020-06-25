@@ -195,25 +195,27 @@ function checkDarkMode(){
   }
 
   function transacoes_valor(sinal,valor,categoria){
-    let transacoesGravadas = JSON.parse(window.localStorage.getItem("transacoes"));
-    if(transacoesGravadas == null){
-      window.localStorage.setItem('transacoes',JSON.stringify([]));
-    }
-    transacoesGravadas = JSON.parse(window.localStorage.getItem("transacoes"));
-    let usuarioGravado = JSON.parse(window.localStorage.getItem("usuarios"));
-    let usuarioIndex = usuarioGravado.findIndex(usuario => usuario.log == 1);
-    let usuario = usuarioGravado[usuarioIndex].email;
-    if(sinal == "mais"){
-      let transacoes = {id: Date.now(), valor, usuario, categoria};
+    if(valor != 0){
+      let transacoesGravadas = JSON.parse(window.localStorage.getItem("transacoes"));
+      if(transacoesGravadas == null){
+        window.localStorage.setItem('transacoes',JSON.stringify([]));
+      }
       transacoesGravadas = JSON.parse(window.localStorage.getItem("transacoes"));
-      transacoesGravadas.push(transacoes);
-      window.localStorage.setItem('transacoes',JSON.stringify(transacoesGravadas));
-    }else{
-      valor = valor * -1;
-      let transacoes = {id: Date.now(), valor, usuario, categoria};
-      transacoesGravadas = JSON.parse(window.localStorage.getItem("transacoes"));
-      transacoesGravadas.push(transacoes);
-      window.localStorage.setItem('transacoes',JSON.stringify(transacoesGravadas));
+      let usuarioGravado = JSON.parse(window.localStorage.getItem("usuarios"));
+      let usuarioIndex = usuarioGravado.findIndex(usuario => usuario.log == 1);
+      let usuario = usuarioGravado[usuarioIndex].email;
+      if(sinal == "mais"){
+        let transacoes = {id: Date.now(), valor, usuario, categoria};
+        transacoesGravadas = JSON.parse(window.localStorage.getItem("transacoes"));
+        transacoesGravadas.push(transacoes);
+        window.localStorage.setItem('transacoes',JSON.stringify(transacoesGravadas));
+      }else{
+        valor = valor * -1;
+        let transacoes = {id: Date.now(), valor, usuario, categoria};
+        transacoesGravadas = JSON.parse(window.localStorage.getItem("transacoes"));
+        transacoesGravadas.push(transacoes);
+        window.localStorage.setItem('transacoes',JSON.stringify(transacoesGravadas));
+      }
     }
   }
 
@@ -238,5 +240,32 @@ function checkDarkMode(){
       document.getElementById("imgposi").style = "opacity:0;";
       document.getElementById("imgneg").style = "opacity:0;";
       document.getElementById("saldo").style = 'color:default;';
+    }
+  }
+
+  function listar_transacoes(){
+    transacoesGravadas = JSON.parse(window.localStorage.getItem("transacoes"));
+    let usuarioGravado = JSON.parse(window.localStorage.getItem("usuarios"));
+    let usuarioIndex = usuarioGravado.findIndex(usuario => usuario.log == 1);
+    let usuario = usuarioGravado[usuarioIndex].email;
+    for(i = 0; i < transacoesGravadas.length; i++){
+      if(transacoesGravadas[i].usuario == usuarioGravado[usuarioIndex].email){
+        let mes;
+        if(((new Date(transacoesGravadas[i].id)).getMonth() + 1) < 10){
+          mes = "0"+ ((new Date(transacoesGravadas[i].id)).getMonth() + 1);
+        }else{
+          mes = ((new Date(transacoesGravadas[i].id)).getMonth() + 1);
+        }
+        let dia;
+        if( (new Date(transacoesGravadas[i].id)).getDate() < 10){
+          dia = "0"+  (new Date(transacoesGravadas[i].id)).getDate();
+        }else{
+          dia =  (new Date(transacoesGravadas[i].id)).getDate();
+        }
+        document.getElementById("lista").innerHTML += "<tr>"+
+        "<td>"+ dia + "/" + mes +"/" +  (new Date(transacoesGravadas[i].id)).getFullYear() +"</td>"+
+        "<td>R$ "+ transacoesGravadas[i].valor +"</td>"+
+        "</tr>";
+      }
     }
   }

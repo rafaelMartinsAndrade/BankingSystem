@@ -22,7 +22,7 @@
   <li><a class="active" href="home.php">Home</a></li>
   <li><a href="">Minha Conta</a></li>
   <li><a href="saldo.php">Saldo</a></li>
-  <li><a href="transferencia.php">Tranferência</a></li>
+  <li><a href="transferencia.php">Tranferências</a></li>
   <li><a href="">Pagamentos</a></li>
   <li><a href="">Deposito</a></li>
   <li><a href="">Cambio</a></li>
