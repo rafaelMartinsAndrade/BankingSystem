@@ -282,13 +282,18 @@ function checkDarkMode(){
   }
 
   function changeURL(){
-    document.getElementById("img").src = document.getElementById("url").value;
+    let usuarioGravado = JSON.parse(window.localStorage.getItem("usuarios"));
+    let usuarioIndex = usuarioGravado.findIndex(usuario => usuario.log == 1);
+    usuarioGravado[usuarioIndex].url = document.getElementById("url").value;
     document.getElementById("url").value = "";
+    window.localStorage.setItem('usuarios',JSON.stringify(usuarioGravado));
+    perfil();
   }
 
   function perfil(){
     let usuarioGravado = JSON.parse(window.localStorage.getItem("usuarios"));
     let usuarioIndex = usuarioGravado.findIndex(usuario => usuario.log == 1);
+    document.getElementById("img").src = usuarioGravado[usuarioIndex].url;
     document.getElementById("perfil_nome").innerHTML = "Nome: " + usuarioGravado[usuarioIndex].nome;
     document.getElementById("perfil_email").innerHTML = "Email: " + usuarioGravado[usuarioIndex].email;
     document.getElementById("perfil_endereco").innerHTML = "Endereço: " + usuarioGravado[usuarioIndex].endereco;
