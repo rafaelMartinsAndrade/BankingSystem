@@ -18,16 +18,14 @@
 </head>
 <body style="transition-duration:2s;">
 
-<ul>
-  <li><a class="active" href="home.php">Home</a></li>
-  <li><a href="">Minha Conta</a></li>
+<ul id="menu">
+  <li><a href="home.php">Home</a></li>
+  <li><a href="perfil.php">Minha Conta</a></li>
   <li><a href="saldo.php">Saldo</a></li>
   <li><a href="transferencia.php">Tranferências</a></li>
-  <li><a href="">Pagamentos</a></li>
-  <li><a href="">Deposito</a></li>
-  <li><a href="">Cambio</a></li>
-  <li><a href="">Emprestimo</a></li>
-  <li><a href="">Seguros</a></li>
+  <li style="float:right" >
+    <a href="index.html">Sair</a>
+  </li>
   <li style="float:right" class="libutton">
     <label class="switch">
       <input id="toggleswitch" type="checkbox" onClick="darkMode()">

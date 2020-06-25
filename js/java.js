@@ -247,8 +247,7 @@ function checkDarkMode(){
     transacoesGravadas = JSON.parse(window.localStorage.getItem("transacoes"));
     let usuarioGravado = JSON.parse(window.localStorage.getItem("usuarios"));
     let usuarioIndex = usuarioGravado.findIndex(usuario => usuario.log == 1);
-    let usuario = usuarioGravado[usuarioIndex].email;
-    for(i = 0; i < transacoesGravadas.length; i++){
+    for(i = (transacoesGravadas.length - 1); i > -1; i--){
       if(transacoesGravadas[i].usuario == usuarioGravado[usuarioIndex].email){
         let mes;
         if(((new Date(transacoesGravadas[i].id)).getMonth() + 1) < 10){
@@ -262,10 +261,38 @@ function checkDarkMode(){
         }else{
           dia =  (new Date(transacoesGravadas[i].id)).getDate();
         }
+        let cor = "color:red;";
+        if(transacoesGravadas[i].valor > 0){
+          cor = "color:green;";
+        }
         document.getElementById("lista").innerHTML += "<tr>"+
-        "<td>"+ dia + "/" + mes +"/" +  (new Date(transacoesGravadas[i].id)).getFullYear() +"</td>"+
-        "<td>R$ "+ transacoesGravadas[i].valor +"</td>"+
+        "<td style="+ cor +">"+ dia + "/" + mes +"/" +  (new Date(transacoesGravadas[i].id)).getFullYear() +"</td>"+
+        "<td style="+ cor +">R$ "+ transacoesGravadas[i].valor +"</td>"+
+        "<td style="+ cor +">"+ transacoesGravadas[i].categoria +"</td>"+
         "</tr>";
       }
     }
+  }
+
+  function centralizar(){
+    let menu_height = document.getElementById("menu").clientHeight,
+    tela_height = screen.height,
+    centralizar = document.getElementById("centralizar");
+    centralizar.style = "margin-top:"+ (tela_height - menu_height - centralizar.clientHeight)*0.31 +";font-size:80px;";
+  }
+
+  function changeURL(){
+    document.getElementById("img").src = document.getElementById("url").value;
+    document.getElementById("url").value = "";
+  }
+
+  function perfil(){
+    let usuarioGravado = JSON.parse(window.localStorage.getItem("usuarios"));
+    let usuarioIndex = usuarioGravado.findIndex(usuario => usuario.log == 1);
+    document.getElementById("perfil_nome").innerHTML = "Nome: " + usuarioGravado[usuarioIndex].nome;
+    document.getElementById("perfil_email").innerHTML = "Email: " + usuarioGravado[usuarioIndex].email;
+    document.getElementById("perfil_endereco").innerHTML = "Endereço: " + usuarioGravado[usuarioIndex].endereco;
+    document.getElementById("perfil_telefone").innerHTML = "Telefone: " + usuarioGravado[usuarioIndex].telefone;
+    document.getElementById("perfil_tipo").innerHTML = "Tipo: " + usuarioGravado[usuarioIndex].tipo;
+
   }

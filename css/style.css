@@ -109,10 +109,6 @@
 		text-decoration: none;
 	  }
 
-	  a:hover.active{
-		background-color: rgb(34, 37, 165);
-	  }
-
 	  table {
 		border-collapse: collapse;
 		width: 100%;
